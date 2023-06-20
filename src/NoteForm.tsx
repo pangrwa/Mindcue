@@ -9,7 +9,7 @@ type NoteFormProps = {
     onSubmit: (data: NoteData) => void
 } 
 
-export function NoteForm({ onSubmit }): NoteFormProps {
+export function NoteForm({ onSubmit }: NoteFormProps) {
 
     const titleRef = useRef<HTMLInputElement>(null);
     const markdownRef = useRef<HTMLTextAreaElement>(null);
@@ -44,15 +44,13 @@ export function NoteForm({ onSubmit }): NoteFormProps {
                             value={selectedTags.map(tag => {
                                 return { label: tag.label, value: tag.id }
                             })} 
-                            /*
                             onChange={tags => {
-                                setSelectedTags(tag => {
-                                    return { label: tag.label, id: tag.value}
-                                })
+                                setSelectedTags(tags.map(tag => {
+                                    return { label: tag.label, id: tag.value }
+                                }))
                             }}
-                            */
                         isMulti />
-                    </Form.Group>
+                    </Form.Group> 
                     </Col>
                 </Row>
 
