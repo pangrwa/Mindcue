@@ -1,6 +1,7 @@
 import { Badge, Button, Col, Row, Stack } from "react-bootstrap"
 import { useNote } from "./NoteLayout"
 import { Link } from "react-router-dom"
+import ReactMarkdown from "react-markdown";
 
 export function Note() {
    const note = useNote() 
@@ -8,7 +9,7 @@ export function Note() {
 
    return (
     <>
-    <Row classnName="align-items-center mb-4">
+    <Row className="align-items-center mb-4">
         <Col>
         <h1>{note.title}</h1>
         {note.tags.length > 0 && (
@@ -31,6 +32,7 @@ export function Note() {
             </Stack>
         </Col>
     </Row>
+    <ReactMarkdown>{note.markdown}</ReactMarkdown>
     </>
    )
 }
