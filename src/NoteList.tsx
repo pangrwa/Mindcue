@@ -15,15 +15,19 @@ type SimplifiedNote = {
 type NoteListProps =  {
     availableTags: Tag[];
     notes: Note[]
+    onDeleteTag: (id: string) => void;
+    onUpdateTag: (id: string, label: string) => void;
 }
 
 type EditTagsModalProps = {
     show: boolean;
     availableTags: Tag[];
     handleClose: () => void; 
+    onDeleteTag: (id: string) => void;
+    onUpdateTag: (id: string, label: string) => void;
 }
 
-export function NoteList({ availableTags, notes }: NoteListProps) {
+export function NoteList({ availableTags, notes, onUpdateTag, onDeleteTag }: NoteListProps) {
     const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
     const [title, setTitle] = useState("");
     const [editTagsModalIsOpen, setEditTagsModalIsOpen] = useState(false);
@@ -77,7 +81,8 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
                     </Form.Group> 
                     </Col>
                 </Row>
-                <EditTagsModal show={editTagsModalIsOpen} handleClose={() => setEditTagsModalIsOpen(false)} availableTags={availableTags}/>
+                <EditTagsModal show={editTagsModalIsOpen} handleClose={() => setEditTagsModalIsOpen(false)} availableTags={availableTags}
+                    onUpdateTag={onUpdateTag} onDeleteTag={onDeleteTag}/>
             </Form>
             <Row xs={1} sm={2} lg={3} xl={4} className="g-3">
                 {filteredNotes.map(note => (
@@ -109,7 +114,7 @@ function NoteCard({ id, title, tags }: SimplifiedNote) {
     )
 } 
 
-function EditTagsModal({ availableTags, handleClose, show }: EditTagsModalProps) {
+function EditTagsModal({ availableTags, handleClose, show, onUpdateTag, onDeleteTag}: EditTagsModalProps) {
     return (
     <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -121,10 +126,11 @@ function EditTagsModal({ availableTags, handleClose, show }: EditTagsModalProps)
                     {availableTags.map(tag => (
                         <Row key={tag.id}>
                             <Col>
-                            <Form.Control type="text" value={tag.label} />
+                            <Form.Control type="text" value={tag.label}
+                                onChange={e => onUpdateTag(tag.id, e.target.value)} />
                             </Col>
                             <Col xs="auto">
-                                <Button variant="outline-danger">&times;</Button>
+                                <Button variant="outline-danger" onClick={() => onDeleteTag(tag.id)}>&times;</Button>
                             </Col>
                         </Row>
                     ))}
